@@ -26,3 +26,6 @@ dist-ssr
 
 # Local environment settings
 .envrc
+
+# Vite temporary files.
+.vite/
