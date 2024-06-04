@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Rox from "rox-browser";
 import {flags} from "./flags.ts";
-import {FeatureFlagsContext, useFeatureFlags} from "./index.ts";
+import {FeatureFlagsContext, initialFlagState} from "./index.ts";
 
 // TODO: insert your SDK Key from https://cloudbees.io/ here.
 const sdkKey = '<INSERT YOUR SDK KEY HERE>'
@@ -13,7 +13,7 @@ type Props = {
 export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
 
 
-  const [flagState, setFlagState] = useState(useFeatureFlags())
+  const [flagState, setFlagState] = useState(initialFlagState)
 
   const initialised = React.useRef(false)
 
