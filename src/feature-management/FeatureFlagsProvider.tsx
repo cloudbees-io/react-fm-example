@@ -13,6 +13,7 @@ type Props = {
 export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
 
   const [flagState, setFlagState] = useState(useFeatureFlags())
+  const [error, setError] = useState<string | undefined>(undefined)
 
   const initialised = React.useRef(false)
 
@@ -31,7 +32,7 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
 
       // Easy to forget to insert your SDK key where shown above, so let's check & remind you!
       if (sdkKey === '<INSERT YOUR SDK KEY HERE>') {
-        throw new Error("You haven't yet inserted your SDK Key into FeatureFlagsProvider.tsx! Feature Flag values will not update until you do so.\nPlease check the README.md for instructions.")
+        throw new Error("You haven't yet inserted your SDK Key into FeatureFlagsProvider.tsx - the application below will not update until you do so. Please check the README.md for instructions.")
       }
 
       await Rox.setup(sdkKey, {
@@ -49,11 +50,19 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
 
     initFeatureFlags().catch((e) => {
       console.error(e.message)
-      window.alert(e.message)
+      setError(e.message)
       setFlagState({...flagState, loading: false})
     })
 
   }, [flagState])
 
-  return <FeatureFlagsContext.Provider value={flagState}>{children}</FeatureFlagsContext.Provider>;
+  return (
+    <FeatureFlagsContext.Provider value={flagState}>
+      {error && (
+        <h3 style={{color: 'red'}}>{error}</h3>
+      )}
+
+      {children}
+    </FeatureFlagsContext.Provider>
+  )
 }
