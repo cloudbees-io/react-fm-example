@@ -7,7 +7,7 @@ The application shows how your React application can respond live to changes in 
 
 Every application using CloudBees Feature Management needs to be configured with an SDK Key that connects it to your Flags & configurations in the [CloudBees Platform](https://cloudbees.io/).
 You can retrieve your SDK Key for a particular Environment by visiting _Feature Management -> Installation_.
-Then, replace the placeholder in `src/App.js` with your SDK Key:
+Then, replace the placeholder in line 7 on `src/feature-management/FeatureFlagsProvider.tsx` with your SDK Key:
 
 `const sdkKey = '<INSERT YOUR SDK KEY HERE>'`
 
