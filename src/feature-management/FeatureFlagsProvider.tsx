@@ -3,8 +3,8 @@ import Rox from "rox-browser";
 import {flags} from "./flags.ts";
 import {FeatureFlagsContext, initialFlagState} from "./index.ts";
 
-// TODO: insert your SDK Key from https://cloudbees.io/ here.
-const sdkKey = '<INSERT YOUR SDK KEY HERE>'
+// TODO: insert your SDK key from https://cloudbees.io/ below.
+const sdkKey = '<your-SDK-key>'
 
 type Props = {
   children?: React.ReactNode
@@ -31,8 +31,8 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
     const initFeatureFlags = async() => {
 
       // Easy to forget to insert your SDK key where shown above, so let's check & remind you!
-      if (sdkKey === '<INSERT YOUR SDK KEY HERE>') {
-        throw new Error("You haven't yet inserted your SDK Key into FeatureFlagsProvider.tsx - the application below will not update until you do so. Please check the README.md for instructions.")
+      if (sdkKey === '<your-SDK-key>') {
+        throw new Error("You haven't yet inserted your SDK key into FeatureFlagsProvider.tsx - the application below will not update until you do so. Please check the README.adoc for instructions.")
       }
 
       await Rox.setup(sdkKey, {
