@@ -17,6 +17,9 @@ To generate the SDK key:
 . The environment-specific SDK key is displayed within the `Rox.setup` call.
 . Copy the SDK key, and then replace the example app placeholder with it.
 
+The SDK key is generated for your environment, and copied into the example application. 
+To learn more, refer to the SDK installation instructions in the platform UI or in https://terrifying-ferocious-brown-snake.docs.beescloud.com/docs/cloudbees-platform/latest/install-sdk/[the documentation].
+
 == Run the application
 
 After saving your SDK key in the example application, run one of the following in the terminal:
