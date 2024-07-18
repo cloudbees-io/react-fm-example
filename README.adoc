@@ -22,7 +22,7 @@ To save your SDK key in the example application:
 
 +
 [cols="2a,2a,1a,4a",options="header"]
-.Location of SDK key placeholder in React app
+.Location of SDK key placeholder in the React app
 |===
 | Example app repository
 | File path
