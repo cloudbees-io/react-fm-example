@@ -92,7 +92,7 @@ Now that your application is running, go to your environment in *Feature managem
 | Sets the message text.
 
 | `fontSize`
-| Number (Int for Python)
+| Number
 | Sets the font size in pixels.
 The flag value has the following variations: `12`, `16`, or `24`.
 
