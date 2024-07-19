@@ -17,7 +17,7 @@ function App() {
 
   return (
     <>
-      <h1>CloudBees Feature Management React sample application</h1>
+      <h1>CloudBees feature management React sample application</h1>
       <div className="card">
         {featureFlags.showMessage.isEnabled() && (
           <p style={{color: featureFlags.fontColor.getValue()}}>
@@ -28,7 +28,7 @@ function App() {
 
       <div className="card">
         <p className="access-platform">
-          Login to the CloudBees Platform below to modify flag values and see them update live in this application.
+          Sign in to the CloudBees platform below to modify flag values and see the changes reflected automatically in this application.
         </p>
         <a href="https://cloudbees.io" target="_blank">
           <img src={cbLogo} className="logo" alt="CloudBees logo"/>
