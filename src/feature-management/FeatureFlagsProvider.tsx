@@ -42,6 +42,14 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
               ...flagState,
             })
           }
+        },
+        disableSignatureVerification: true,
+        selfManaged : {
+          configurationURL: "https://api.vpc-install-test.saas-tools.beescloud.com/device/get_configuration",
+          serverURL: "https://rox-conf.vpc-install-test.saas-tools.beescloud.com",
+          stateURL: "https://api.vpc-install-test.saas-tools.beescloud.com/device/update_state_store/",          
+          analyticsURL: "https://fm-analytics.vpc-install-test.saas-tools.beescloud.com",
+          pushUpdateURL: "https://sdk-notification-service.vpc-install-test.saas-tools.beescloud.com/sse",
         }
       })
 
