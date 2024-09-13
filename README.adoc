@@ -43,6 +43,17 @@ To save your SDK key in the example application:
 The SDK key is generated for your environment, and copied into the example application.
 To learn more, refer to the SDK installation instructions in the platform UI or in link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/install-sdk/[the documentation].
 
+
+=== VPC Installations
+
+If you are using Feature Management in a CloudBees-managed VPC environment, you must configure additional settings.
+
+There are six endpoints that must be updated in the main program file.
+
+Modify the `Rox.setup()` as seen in `src/feature-management/FeatureFlagsProvider.tsx`.
+
+Your SDK configurations must point to the specific endpoints provided by your CloudBees SRE.
+
 [#run]
 == Run the application
 
