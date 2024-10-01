@@ -31,6 +31,7 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
     const initFeatureFlags = async() => {
 
       // Easy to forget to insert your SDK key where shown above, so let's check & remind you!
+      // @ts-ignore
       if (sdkKey === '<YOUR-SDK-KEY>') {
         throw new Error("You haven't yet inserted your SDK key into FeatureFlagsProvider.tsx - the application below will not update until you do so. Please check the README.adoc for instructions.")
       }
