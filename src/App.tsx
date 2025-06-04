@@ -1,67 +1,61 @@
-import cbLogo from './assets/CB-stacked-logo-full-color.svg'
 import './App.css'
-import { useFeatureFlags } from './feature-management'
-import { LoadingIndicator } from './LoadingIndicator.tsx'
+import { Outlet, Route, Routes } from 'react-router-dom'
+import { Home } from './Home.tsx'
+import { About } from './About.tsx'
+import { Nav } from './Nav.tsx'
 import { useFeatureFlag } from './useFeatureFlag.ts'
-import { flags } from './feature-management/flags.ts'
+import { namespaceFlags } from './feature-management/flags.ts'
+
+export const customRoutes = [
+  {
+    path: '/',
+    label: 'Home',
+    element: <Home />,
+    index: true,
+    featureFlag: { namespace: 'routes', flag: 'home' },
+  },
+  {
+    path: 'about',
+    label: 'About',
+    element: <Home />,
+    featureFlag: { namespace: 'routes', flag: 'about' },
+  },
+]
+
+const Layout = () => (
+  <div>
+    <Nav />
+    <Outlet />
+  </div>
+)
 
 function App() {
-  const featureFlags = useFeatureFlags()
-
-  const flagUsingCustomHook = useFeatureFlag(flags.namespace.namespacedFlag)
-
-  if (featureFlags.loading) {
-    return (
-      <div className="position-relative pb-9">
-        <LoadingIndicator />
-      </div>
-    )
-  }
-
   return (
     <>
-      <h1>CloudBees feature management React sample application</h1>
-      <div className="card">
-        {featureFlags.showMessage.isEnabled() && (
-          <p
-            style={{
-              color: featureFlags.fontColor.getValue(),
-              fontSize: featureFlags.fontSize.getValue(),
-            }}
-          >
-            {featureFlags.message.getValue()}
-          </p>
-        )}
-        {flagUsingCustomHook ? (
-          <p
-            style={{
-              color: featureFlags.fontColor.getValue(),
-              fontSize: featureFlags.fontSize.getValue(),
-            }}
-          >
-            This should only show if flagUsingCustomHook is true
-          </p>
-        ) : (
-          <p
-            style={{
-              color: featureFlags.fontColor.getValue(),
-              fontSize: featureFlags.fontSize.getValue(),
-            }}
-          >
-            This should only show if flagUsingCustomHook is false
-          </p>
-        )}
-      </div>
-
-      <div className="card">
-        <p className="access-platform">
-          Sign in to the CloudBees platform below to modify flag values and see
-          the changes reflected automatically in this application.
-        </p>
-        <a href="https://cloudbees.io" target="_blank">
-          <img src={cbLogo} className="logo" alt="CloudBees logo" />
-        </a>
-      </div>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          {customRoutes.map((route, index) => {
+            const routeFlag = route.featureFlag
+              ? useFeatureFlag(
+                  namespaceFlags[route.featureFlag.namespace][
+                    route.featureFlag.flag
+                  ]
+                )
+              : true
+            return routeFlag ? (
+              <Route
+                key={index}
+                path={route.path}
+                element={route.element}
+                index={route.index}
+              />
+            ) : null
+          })}
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="*" element={<div>404 Not Found</div>} />
+        </Route>
+      </Routes>
     </>
   )
 }

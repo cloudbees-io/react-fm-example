@@ -2,12 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import {FeatureFlagsProvider} from "./feature-management/FeatureFlagsProvider.tsx";
+import { FeatureFlagsProvider } from './feature-management/FeatureFlagsProvider.tsx'
+import { BrowserRouter } from 'react-router-dom'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <FeatureFlagsProvider>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </FeatureFlagsProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 )
