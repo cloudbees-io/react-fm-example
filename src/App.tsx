@@ -17,7 +17,7 @@ export const customRoutes = [
   {
     path: 'about',
     label: 'About',
-    element: <Home />,
+    element: <About />,
     featureFlag: { namespace: 'routes', flag: 'about' },
   },
 ]
@@ -51,8 +51,6 @@ function App() {
               />
             ) : null
           })}
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
           <Route path="*" element={<div>404 Not Found</div>} />
         </Route>
       </Routes>
