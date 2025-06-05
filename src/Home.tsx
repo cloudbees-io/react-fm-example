@@ -7,9 +7,7 @@ import cbLogo from './assets/CB-stacked-logo-full-color.svg'
 export const Home = () => {
   const featureFlags = useFeatureFlags()
 
-  const flagUsingCustomHook = useFeatureFlag(
-    namespaceFlags.namespace.namespacedFlag
-  )
+  const showMessage = useFeatureFlag(namespaceFlags.default.showMessage)
 
   if (featureFlags.loading) {
     return (
@@ -22,7 +20,7 @@ export const Home = () => {
     <>
       <h1>CloudBees feature management React sample application</h1>
       <div className="card">
-        {featureFlags.default.showMessage.isEnabled() && (
+        {showMessage && (
           <p
             style={{
               color: featureFlags.default.fontColor.getValue(),
@@ -30,25 +28,6 @@ export const Home = () => {
             }}
           >
             {featureFlags.default.message.getValue()}
-          </p>
-        )}
-        {flagUsingCustomHook ? (
-          <p
-            style={{
-              color: featureFlags.default.fontColor.getValue(),
-              fontSize: featureFlags.default.fontSize.getValue(),
-            }}
-          >
-            <span>This should only show if flagUsingCustomHook is true</span>
-          </p>
-        ) : (
-          <p
-            style={{
-              color: featureFlags.default.fontColor.getValue(),
-              fontSize: featureFlags.default.fontSize.getValue(),
-            }}
-          >
-            <span>This should only show if flagUsingCustomHook is false</span>
           </p>
         )}
       </div>
