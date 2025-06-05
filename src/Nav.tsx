@@ -7,9 +7,11 @@ import { namespaceFlags } from './feature-management/flags'
 export const Nav = () => {
   const enabledRoutes = customRoutes.filter((route) => {
     const routeFlag = route.featureFlag
-      ? useFeatureFlag(
-          namespaceFlags[route.featureFlag.namespace][route.featureFlag.flag]
-        )
+      ? route.featureFlag.namespace === 'routes' && route.featureFlag.flag === 'about'
+        ? true
+        : useFeatureFlag(
+            namespaceFlags[route.featureFlag.namespace][route.featureFlag.flag]
+          )
       : true
     return routeFlag
   })

@@ -12,7 +12,6 @@ export const namespaceFlags = {
   },
   routes: {
     home: new Flag(true),
-    about: new Flag(false),
   },
   default: {
     // Boolean - should the message be shown?
