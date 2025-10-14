@@ -15,7 +15,7 @@
     "@types/rox-browser": "^5.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "rox-browser": "^5.4.12"
+    "rox-browser": "6.0.6"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

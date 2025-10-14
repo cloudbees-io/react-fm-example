@@ -1549,10 +1549,10 @@ rollup@^4.13.0:
     "@rollup/rollup-win32-x64-msvc" "4.18.0"
     fsevents "~2.3.2"
 
-rox-browser@^5.4.12:
-  version "5.4.12"
-  resolved "https://registry.yarnpkg.com/rox-browser/-/rox-browser-5.4.12.tgz#5cee00ca8086695c3718454978fcef7e50a42f24"
-  integrity sha512-O6HcCpbQHI0bJXyU+QZZCFjIPLxFMwQPp/CenhGiZIWqtsDB4OcuQ+UnKhtE9cLephu/RspEfGgGlKOF73U6Hw==
+rox-browser@6.0.6:
+  version "6.0.6"
+  resolved "https://registry.yarnpkg.com/rox-browser/-/rox-browser-6.0.6.tgz#bf259abd6b709a3e6302add0f1e5f7f670673b82"
+  integrity sha512-DEzhaEvK9F+kIUm5Rkg/jzwR73jjEZlz3qik6ttuGsUkJa0cdNZ2a01sf8D7BUeSeUnNNKLb/pGpEZBXg6Fw2g==
   dependencies:
     axios "^1.6.0"
 
