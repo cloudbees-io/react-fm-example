@@ -1,117 +1,140 @@
-= Example React application for CloudBees platform feature management
+# Example React application for CloudBees platform feature management
 
-Use this example application to integrate with the CloudBees platform and test out feature management.
-After integrating, watch the application display change in response to any updates you make to flag values in the platform.
+Use this example application to integrate with the CloudBees platform and test feature management. After integrating, observe changes in the application UI as you update flag values in the platform.
 
-In the example application, the ROX package is already set up, and feature flags are already coded in.
+In this example, the Rox SDK is already set up, and feature flags are implemented in the code.
 
+---
 
-[#add-key]
-== Integrate the example application with the platform
+## Get started with the React project
 
-Your SDK key is a link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/feature-management/learn-about-feature-flags[unique environment identifier].
-The SDK key is displayed in the SDK installation instructions in the platform UI.
-To successfully install the SDK, you must copy the SDK key for that environment into your application at the Rox setup call, save the file, and run the application.
+To get started with the `react-fm-example` project, follow these steps:
 
-To save your SDK key in the example application:
+### 1. Clone the example repository
 
-. Go to *Feature management* > *Installation* in the platform UI.
-. Select an environment (or create a new one).
-. Select the appropriate SDK.
-. Copy the environment-specific SDK key located within the `Rox.setup` call.
+```bash
+git clone git@github.com:cloudbees-io/react-fm-example.git
+```
 
-+
-[cols="2a,2a,1a,4a",options="header"]
-.Location of SDK key placeholder in the React app
-|===
-| Example app repository
-| File path
-| Line number
-| Line
+### 2. Open the project
 
-| link:https://github.com/cloudbees-io/react-fm-example[react-fm-example]
-| src/feature-management/FeatureFlagsProvider.tsx
-| 7
-| `const sdkKey = '<YOUR-SDK-KEY>'`
+Use your preferred IDE (for example, Visual Studio Code, WebStorm, or IntelliJ IDEA).
 
-|===
+### 3. Locate and copy the SDK key in the CloudBees platform
 
-+
-. Replace the example app placeholder (`<YOUR-SDK-KEY>`) with your copied key.
-. Save the file in the repository.
+1. In the CloudBees platform, go to **Feature management > Flags**.  
+2. Select an application.  
+3. Select the **copy** icon next to the SDK key.
 
-The SDK key is generated for your environment, and copied into the example application.
-To learn more, refer to the SDK installation instructions in the platform UI or in link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/install-sdk/[the documentation].
+> **Note:**  
+> If no SDK key is available:  
+> 1. In the platform, go to **Feature management > Flags**.  
+> 2. Select the **installation instructions** icon.  
+> 3. Follow the installation steps. The SDK key appears once an application is linked to an environment.  
+> 4. Close the installation panel and copy the SDK key.
 
-[#run]
-== Run the application
+### 4. Add the SDK key to the React application
 
-After saving your SDK key in the example application, run the example application.
+Open the following file:
 
-Run one of the following in the terminal:
+```
+src/feature-management/FeatureFlagsProvider.tsx
+```
 
-* For Yarn package manager:
-+
-[source,bash]
-----
+Replace the placeholder with your SDK key, for example:
+
+```tsx
+const sdkKey = "<YOUR-SDK-KEY>";
+```
+
+Save the file.
+
+---
+
+## Run the application
+
+You can use either Yarn or NPM.
+
+### Yarn
+
+```bash
 yarn install
 yarn dev
-----
+```
 
-* For NPM package manager:
-+
-[source,bash]
-----
+### NPM
 
+```bash
 npm install
 npm run dev
-----
+```
 
-Then go to the provided URL to display the running application.
+After the application starts, open the URL displayed in your terminal to view the running application.
 
-TIP: After you have the example application running, select *TEST INTEGRATION* in Step 5 of the SDK installation in the platform UI to check if your integration is successful.
+To verify integration, return to the SDK installation panel in the CloudBees platform UI and select **Test integration**.
 
-== Use the platform to update flag values
+---
 
-Now that your application is running, go to your environment in *Feature management* to display the flags available in the example application:
+## View the imported flags
 
-[cols="1a,1a,4a",options="header"]
-.Feature flags in the example application.
-|===
+Now that your application is running:
 
-| Flag name
-| Flag type
-| Description
+1. In the CloudBees platform, select **Feature management**.  
+2. Select your example application to view the imported feature flags.
 
-| `showMessage`
-| Boolean
-| Turns the message on or off.
+### Feature flags in this example
 
-| `message`
-| String
-| Sets the message text.
+| Flag name     | Type    | Description                                                     |
+|---------------|---------|-----------------------------------------------------------------|
+| **showMessage** | Boolean | Turns the message on or off.                                   |
+| **message**     | String  | Sets the message text.                                         |
+| **fontSize**    | Number  | Font size in pixels. Values: `12`, `16`, or `24`.              |
+| **fontColor**   | String  | Font color. Values: `red`, `green`, or `blue`.                 |
 
-| `fontSize`
-| Number
-| Sets the font size in pixels.
-The flag value has the following variations: `12`, `16`, or `24`.
+> **Note:**  
+> If no flags are displayed, verify that the environment-specific SDK key is correctly added in  
+> `src/feature-management/FeatureFlagsProvider.tsx`.  
+> Save the file and restart the application.
 
-| `fontColor`
-| String
-| Sets the font color. The flag value has the following variations: `red`, `green`, or `blue`.
+---
 
-|===
+## Update flag values in the platform UI
 
-NOTE: If no flags are displayed, check that the environment-specific SDK key is <<add-key,correctly added to the example application>>.
+1. Select **Feature management**.  
+2. Select the application.  
+3. Select the **vertical ellipsis** next to a flag.  
+4. Select **Configure**.  
+5. Select the environment associated with your SDK key.  
+6. Update the flag value and save your changes.  
+7. Set **Configuration status** to **On**.
 
-To update flags in the platform UI:
+The updated flag value will appear in the application shortly.
 
-. Select *Feature management* from the left pane.
-. Select the vertical ellipsis icon next to the flag you want to configure.
-. Select *Configure*.
-. Select the *Environment* you used for copying the SDK key.
-. Update a flag value and save your changes.
-. Switch the *Configuration status* to *On*.
+---
 
-The updated flag value is soon reflected in the display of the application.
-For more information on setting flag values, refer to the link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/feature-management/configure-feature-flags[flag configuration documentation].
+## Use the application with multiple SDK keys
+
+You can run multiple SDK instances in one application, each with its own SDK key and environment. Each instance is isolated. Use this when you need to:
+
+- Compare flags across environments without redeploying  
+- Support multi-tenant routing  
+- Combine server-side and client-side evaluations  
+
+To use multiple SDK keys:
+
+1. Retrieve the SDK keys for the environments you will use.  
+2. Initialize a separate SDK instance for each key.  
+3. Route requests to the appropriate instance (for example, by tenant or region).  
+4. Perform register/fetch/stream setup on each instance as required by the SDK.  
+5. Evaluate flags using the correct instance and a consistent user/context object.  
+6. Tag logs or metrics by instance and shut down instances when not needed.
+
+---
+
+## Documentation reference
+
+- JavaScript SDK installation:  
+  https://docs.cloudbees.com/docs/cloudbees-platform/latest/install-sdk/javascript-sdk
+
+- Configure feature flags:  
+  https://docs.cloudbees.com/docs/cloudbees-platform/latest/feature-management/flag-configuration
