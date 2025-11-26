@@ -1,117 +1,122 @@
-= Example React application for CloudBees platform feature management
+= CloudBees Feature Management React Examples
 
-Use this example application to integrate with the CloudBees platform and test out feature management.
-After integrating, watch the application display change in response to any updates you make to flag values in the platform.
+A collection of React examples demonstrating various patterns and capabilities of CloudBees Feature Management.
 
-In the example application, the ROX package is already set up, and feature flags are already coded in.
+== Overview
 
+This repository contains multiple example applications, from basic flag usage to advanced patterns like A/B testing, targeting, and configuration management. Each example is a standalone React + TypeScript application that you can clone and run independently.
 
-[#add-key]
-== Integrate the example application with the platform
+== Examples
 
-Your SDK key is a link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/feature-management/learn-about-feature-flags[unique environment identifier].
-The SDK key is displayed in the SDK installation instructions in the platform UI.
-To successfully install the SDK, you must copy the SDK key for that environment into your application at the Rox setup call, save the file, and run the application.
-
-To save your SDK key in the example application:
-
-. Go to *Feature management* > *Installation* in the platform UI.
-. Select an environment (or create a new one).
-. Select the appropriate SDK.
-. Copy the environment-specific SDK key located within the `Rox.setup` call.
-
-+
-[cols="2a,2a,1a,4a",options="header"]
-.Location of SDK key placeholder in the React app
+[cols="1,3,2",options="header"]
+.Available Examples
 |===
-| Example app repository
-| File path
-| Line number
-| Line
+| Example | Description | Best For
 
-| link:https://github.com/cloudbees-io/react-fm-example[react-fm-example]
-| src/feature-management/FeatureFlagsProvider.tsx
-| 7
-| `const sdkKey = '<YOUR-SDK-KEY>'`
+| link:examples/01-basic-example[01-basic-example]
+| Simple feature flags with boolean, string, and number types. Real-time UI updates.
+| Getting started, SDK integration basics
+
+| link:examples/02-nested-flags[02-nested-flags]
+| Hierarchical flag dependencies, container flags, and conditional evaluation.
+| Complex feature hierarchies, related features
+
+| link:examples/03-config-management[03-config-management]
+| Shared configuration files, namespaces, environment overrides.
+| Multi-environment setups, team collaboration
+
+| link:examples/04-impression-handler[04-impression-handler]
+| Impression handler for tracking flag evaluations and analytics integration.
+| Analytics tracking, feature adoption metrics
+
+| link:examples/05-dynamic-api[05-dynamic-api]
+| Dynamic API for accessing flags by name at runtime without pre-registration.
+| Plugin systems, feature catalogs, runtime flags
+
+| link:examples/06-flag-freeze[06-flag-freeze]
+| Flag freeze to control when configuration changes take effect in your application.
+| Critical flows, consistency control, mobile apps
 
 |===
 
-+
-. Replace the example app placeholder (`<YOUR-SDK-KEY>`) with your copied key.
-. Save the file in the repository.
+== Quick Start
 
-The SDK key is generated for your environment, and copied into the example application.
-To learn more, refer to the SDK installation instructions in the platform UI or in link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/install-sdk/[the documentation].
+=== Choose an Example
 
-[#run]
-== Run the application
+Navigate to the example you want to explore:
 
-After saving your SDK key in the example application, run the example application.
-
-Run one of the following in the terminal:
-
-* For Yarn package manager:
-+
 [source,bash]
 ----
+cd examples/01-basic-example
+----
+
+=== Install Dependencies
+
+[source,bash]
+----
+npm install
+# or
 yarn install
+----
+
+=== Add Your SDK Key
+
+. Go to *Feature management* > *Installation* in the link:https://cloudbees.io[CloudBees platform UI]
+. Select an environment (or create a new one)
+. Copy the SDK key from the installation instructions
+. Open `src/feature-management/FeatureFlagsProvider.tsx` in your chosen example
+. Replace `<YOUR-SDK-KEY>` with your actual SDK key
+
+[source,typescript]
+----
+const sdkKey = 'your-actual-sdk-key-here'
+----
+
+=== Run the Application
+
+[source,bash]
+----
+npm run dev
+# or
 yarn dev
 ----
 
-* For NPM package manager:
-+
-[source,bash]
-----
+Then open the provided URL (usually `http://localhost:5173`) in your browser.
 
-npm install
-npm run dev
-----
+=== Test the Integration
 
-Then go to the provided URL to display the running application.
+. In the CloudBees platform UI, go to *Feature management*
+. You should see flags from your running example
+. Update flag values and watch changes appear in real-time
 
-TIP: After you have the example application running, select *TEST INTEGRATION* in Step 5 of the SDK installation in the platform UI to check if your integration is successful.
+== Documentation
 
-== Use the platform to update flag values
+For detailed information about CloudBees Feature Management:
 
-Now that your application is running, go to your environment in *Feature management* to display the flags available in the example application:
+- link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/feature-management/[Feature Management Documentation]
+- link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/sdk-reference/javascript-browser[JavaScript Browser SDK Reference]
+- link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/install-sdk/[SDK Installation Guide]
 
-[cols="1a,1a,4a",options="header"]
-.Feature flags in the example application.
-|===
+== Learning Path
 
-| Flag name
-| Flag type
-| Description
+We recommend exploring the examples in order:
 
-| `showMessage`
-| Boolean
-| Turns the message on or off.
+. *Basic Example*: Understand SDK setup and simple flag types
+. *Nested Flags*: Learn flag dependencies and hierarchies
+. *Config Management*: Master multi-environment configurations
+. *Impression Handler*: Track flag evaluations for analytics and feature adoption
+. *Dynamic API*: Access flags dynamically for plugin systems and runtime configurations
+. *Flag Freeze*: Control when configuration changes take effect with freeze levels
 
-| `message`
-| String
-| Sets the message text.
+== Contributing
 
-| `fontSize`
-| Number
-| Sets the font size in pixels.
-The flag value has the following variations: `12`, `16`, or `24`.
+Each example is self-contained and can be enhanced independently. When adding new patterns:
 
-| `fontColor`
-| String
-| Sets the font color. The flag value has the following variations: `red`, `green`, or `blue`.
+. Keep examples focused on specific concepts
+. Include detailed comments in code
+. Update the example's README with clear explanations
+. Add your example to the table above
 
-|===
+== License
 
-NOTE: If no flags are displayed, check that the environment-specific SDK key is <<add-key,correctly added to the example application>>.
-
-To update flags in the platform UI:
-
-. Select *Feature management* from the left pane.
-. Select the vertical ellipsis icon next to the flag you want to configure.
-. Select *Configure*.
-. Select the *Environment* you used for copying the SDK key.
-. Update a flag value and save your changes.
-. Switch the *Configuration status* to *On*.
-
-The updated flag value is soon reflected in the display of the application.
-For more information on setting flag values, refer to the link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/feature-management/configure-feature-flags[flag configuration documentation].
+MIT License - See link:LICENSE[LICENSE] file for details
