@@ -71,7 +71,6 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
      * REGISTER: Register flags
      *
      * Register all pre-defined flags from flags.ts
-     * This must be done BEFORE calling Rox.setup()
      *
      * Note: Dynamic API flags do NOT need to be registered
      */
