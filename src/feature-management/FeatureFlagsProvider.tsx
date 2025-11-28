@@ -3,8 +3,44 @@ import Rox from "rox-browser";
 import {flags} from "./flags.ts";
 import {FeatureFlagsContext, initialFlagState} from "./index.ts";
 
+/**
+ * FEATURE FLAGS PROVIDER
+ *
+ * This component initializes the CloudBees Feature Management SDK and provides
+ * feature flags to the entire application via React Context.
+ *
+ * This example demonstrates:
+ *
+ * 1. STATIC API (Pre-registered flags):
+ *    - Flags defined in flags.ts
+ *    - Must call Rox.register() before Rox.setup()
+ *    - Access via useFeatureFlags() hook
+ *    - Example: featureFlags.showMessage.isEnabled()
+ *
+ * 2. DYNAMIC API (Runtime flags):
+ *    - No registration needed
+ *    - Access anywhere after Rox.setup() completes
+ *    - Use Rox.dynamicApi methods directly
+ *    - Example: Rox.dynamicApi.isEnabled('featureName', false)
+ *
+ * 3. CUSTOM PROPERTIES (User targeting):
+ *    - Set user/context properties for targeting rules
+ *    - Use in CloudBees platform to show features to specific users
+ *    - Example: Show premium features only to 'premium' tier users
+ *
+ * 4. IMPRESSION HANDLER (Analytics tracking):
+ *    - Track every flag evaluation for analytics
+ *    - Logs to console (send to analytics service in production)
+ *
+ * 5. FLAG FREEZE (Control updates):
+ *    - Prevent automatic flag updates during critical flows
+ *    - Example included with unfreeze demonstration
+ *
+ * Check browser console to see all features in action!
+ */
+
 // TODO: insert your SDK key from https://cloudbees.io/ below.
-const sdkKey = '<YOUR-SDK-KEY>'
+const sdkKey = '7e1cc490-3239-4243-9610-234919b50b53'
 
 type Props = {
   children?: React.ReactNode
@@ -26,6 +62,56 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
 
     setFlagState({...flagState, loading: true})
 
+    /**
+     * CUSTOM PROPERTIES
+     *
+     * Custom properties allow you to target specific users or segments in CloudBees platform.
+     * Set these BEFORE calling Rox.setup() so they're available for targeting rules.
+     *
+     * Types:
+     * - setCustomStringProperty: For text values (userId, email, plan, etc.)
+     * - setCustomNumberProperty: For numeric values (age, score, count, etc.)
+     * - setCustomBooleanProperty: For true/false values (isPremium, isAdmin, etc.)
+     * - setCustomDateProperty: For date/time values (registrationDate, lastLogin, etc.)
+     *
+     * Use in CloudBees platform:
+     * Create targeting rules like:
+     * - "Show feature if userTier = 'premium'"
+     * - "Show feature if registrationDate > '2024-01-01'"
+     * - "Show feature if accountAgeInDays > 30"
+     */
+
+    // String property example - User tier for subscription-based targeting
+    Rox.setCustomStringProperty('userTier', () => {
+      return 'premium'; // Options: 'free', 'premium', 'enterprise'
+    });
+
+    // Number property example - User account age in days
+    Rox.setCustomNumberProperty('accountAgeInDays', () => {
+      return 45; // User registered 45 days ago
+    });
+
+    // Boolean property example - Beta tester status
+    Rox.setCustomBooleanProperty('isBetaTester', () => {
+      return true;
+    });
+
+    // Date property example - User registration date
+    Rox.setCustomDateProperty('registrationDate', () => {
+      // In production, get this from user's actual registration date
+      // Example: return new Date(user.registeredAt);
+      return new Date('2024-01-15'); // User registered on Jan 15, 2024
+    });
+
+
+    /**
+     * REGISTER: Register flags
+     *
+     * Register all pre-defined flags from flags.ts
+     * This must be done BEFORE calling Rox.setup()
+     *
+     * Note: Dynamic API flags do NOT need to be registered
+     */
     Rox.register('', flags)
 
     const initFeatureFlags = async() => {
@@ -36,15 +122,77 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
         throw new Error("You haven't yet inserted your SDK key into FeatureFlagsProvider.tsx - the application below will not update until you do so. Please check the README.adoc for instructions.")
       }
 
+      /**
+       * SETUP: Initialize the SDK
+       *
+       * Rox.setup() connects to CloudBees platform and fetches flag configurations
+       * After this completes, both Static API and Dynamic API flags are ready to use
+       */
       await Rox.setup(sdkKey, {
+        // for debug SDK set debugLevel to 'verbose'
+        // debugLevel: 'verbose',
         configurationFetchedHandler(fetcherResult: Rox.RoxFetcherResult) {
           if (fetcherResult.fetcherStatus === "APPLIED_FROM_NETWORK") {
+            // Flag values updated from CloudBees platform
+            // Trigger re-render to show new values
             setFlagState({
               ...flagState,
             })
           }
+        },
+
+        /**
+         * IMPRESSION HANDLER
+         *
+         * This handler fires every time a flag is evaluated in your application.
+         * - Fires when: .isEnabled(), .getValue(), or .getNumber() is called
+         * - Use for: Analytics, tracking feature adoption, A/B testing results
+         *
+         * Common use cases:
+         * - Send to analytics (Google Analytics, Mixpanel, Amplitude)
+         * - Track which features users interact with
+         * - Measure A/B test exposure and results
+         * - Debug flag evaluations during development
+         *
+         * Note: Open your browser's Developer Console to see impressions logged in this example
+         */
+        impressionHandler(reportingValue: any, _context: any) {
+          // Log to console for demonstration
+          // In production, send this data to your analytics service
+          console.log('🎯 Flag Impression:', {
+            name: reportingValue.name,
+            value: reportingValue.value,
+            timestamp: new Date().toISOString()
+          });
+
+          // Example: Send to analytics service (uncomment in production)
+          // analytics.track('Feature Flag Viewed', {
+          //   flagName: reportingValue.name,
+          //   flagValue: reportingValue.value,
+          // });
         }
       })
+
+      /**
+       * FLAG FREEZE - Demonstration
+       *
+       * Uncomment the code below to see freeze/unfreeze in action:
+       * After 10 seconds, it will unfreeze the flag and fetch new values.
+       *
+       * To test:
+       * 1. Change frozenFlag value in CloudBees platform
+       * 2. Notice it doesn't update (it's frozen)
+       * 3. Uncomment code below and reload page
+       * 4. After 10 seconds, the flag will unfreeze and fetch latest value
+       */
+
+      // setTimeout(async () => {
+      //   console.log('🔓 Unfreezing frozenFlag...');
+      //   flags.frozenFlag.unfreeze();
+      //   console.log('🔄 Fetching latest configuration...');
+      //   await Rox.fetch();
+      //   console.log('✅ frozenFlag now has the latest value from CloudBees:', flags.frozenFlag.isEnabled());
+      // }, 10000);
 
       setFlagState({...flagState, loading: false})
     }
