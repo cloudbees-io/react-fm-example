@@ -3,42 +3,6 @@ import Rox from "rox-browser";
 import {flags} from "./flags.ts";
 import {FeatureFlagsContext, initialFlagState} from "./index.ts";
 
-/**
- * FEATURE FLAGS PROVIDER
- *
- * This component initializes the CloudBees Feature Management SDK and provides
- * feature flags to the entire application via React Context.
- *
- * This example demonstrates:
- *
- * 1. STATIC API (Pre-registered flags):
- *    - Flags defined in flags.ts
- *    - Must call Rox.register() before Rox.setup()
- *    - Access via useFeatureFlags() hook
- *    - Example: featureFlags.showMessage.isEnabled()
- *
- * 2. DYNAMIC API (Runtime flags):
- *    - No registration needed
- *    - Access anywhere after Rox.setup() completes
- *    - Use Rox.dynamicApi methods directly
- *    - Example: Rox.dynamicApi.isEnabled('featureName', false)
- *
- * 3. CUSTOM PROPERTIES (User targeting):
- *    - Set user/context properties for targeting rules
- *    - Use in CloudBees platform to show features to specific users
- *    - Example: Show premium features only to 'premium' tier users
- *
- * 4. IMPRESSION HANDLER (Analytics tracking):
- *    - Track every flag evaluation for analytics
- *    - Logs to console (send to analytics service in production)
- *
- * 5. FLAG FREEZE (Control updates):
- *    - Prevent automatic flag updates during critical flows
- *    - Example included with unfreeze demonstration
- *
- * Check browser console to see all features in action!
- */
-
 // TODO: insert your SDK key from https://cloudbees.io/ below.
 const sdkKey = '<YOUR-SDK-KEY>'
 
@@ -78,12 +42,11 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
      * Create targeting rules like:
      * - "Show feature if userTier = 'premium'"
      * - "Show feature if registrationDate > '2024-01-01'"
-     * - "Show feature if accountAgeInDays > 30"
      */
 
     // String property example - User tier for subscription-based targeting
     Rox.setCustomStringProperty('userTier', () => {
-      return 'premium'; // Options: 'free', 'premium', 'enterprise'
+      return 'premium'; // variants: 'free', 'premium', 'enterprise'
     });
 
     // Number property example - User account age in days
@@ -159,7 +122,7 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
         impressionHandler(reportingValue: any, _context: any) {
           // Log to console for demonstration
           // In production, send this data to your analytics service
-          console.log('🎯 Flag Impression:', {
+          console.log('Flag Impression:', {
             name: reportingValue.name,
             value: reportingValue.value,
             timestamp: new Date().toISOString()
@@ -187,11 +150,11 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
        */
 
       // setTimeout(async () => {
-      //   console.log('🔓 Unfreezing frozenFlag...');
+      //   console.log('Unfreezing frozenFlag...');
       //   flags.frozenFlag.unfreeze();
-      //   console.log('🔄 Fetching latest configuration...');
+      //   console.log('Fetching latest configuration...');
       //   await Rox.fetch();
-      //   console.log('✅ frozenFlag now has the latest value from CloudBees:', flags.frozenFlag.isEnabled());
+      //   console.log('frozenFlag now has the latest value from CloudBees:', flags.frozenFlag.isEnabled());
       // }, 10000);
 
       setFlagState({...flagState, loading: false})

@@ -1,26 +1,5 @@
 import {Flag, RoxString, RoxNumber} from "rox-browser";
 
-/**
- * STATIC API FLAGS
- *
- * These flags are pre-registered with the Rox SDK.
- * They must be defined here and registered in FeatureFlagsProvider.tsx before calling Rox.setup()
- *
- * Benefits of Static API:
- * - Type safety and autocompletion in your IDE
- * - Centralized flag definitions
- * - Easy to track all flags used in your application
- * - Best for flags known at compile time
- *
- * How to use:
- * 1. Define flags here using Flag, RoxString, or RoxNumber
- * 2. Register them with Rox.register() in FeatureFlagsProvider.tsx
- * 3. Access them via useFeatureFlags() hook in components
- *
- * Note: For flags that need to be accessed dynamically (e.g., flag names from API),
- * use the Dynamic API instead: Rox.dynamicApi.isEnabled(), Rox.dynamicApi.value(), etc.
- * See App.tsx for Dynamic API examples.
- */
 
 type IFeatureFlags = typeof flags
 
@@ -55,11 +34,11 @@ export const flags = {
    *
    * Freeze Levels:
    * - "none": Updates immediately (default behavior)
-   * - "untilForeground": Frozen until app comes to foreground (mobile apps)
+   * - "untilForeground": Frozen until app comes to foreground (for mobile apps only)
    * - "untilLaunch": Frozen until explicitly unfrozen
    *
    * Use cases:
-   * - Prevent UI changes during critical user flows (checkout, payment)
+   * - Prevent UI changes during critical user flows 
    * - Maintain consistency during multi-step processes
    * - Control when feature changes take effect
    *
