@@ -4,7 +4,7 @@ import {featureFlags, uxFlags} from "./flags.ts";
 import {FeatureFlagsContext, initialFlagState} from "./index.ts";
 
 // TODO: insert your SDK key from https://cloudbees.io/ below.
-const sdkKey = '7e1cc490-3239-4243-9610-234919b50b53'
+const sdkKey = '<YOUR-SDK-KEY>'
 
 type Props = {
   children?: React.ReactNode
@@ -16,6 +16,15 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
   const [error, setError] = useState<string | undefined>(undefined)
 
   const initialised = React.useRef(false)
+
+  // Mock user object for some custome properties example.
+  const user = {
+    id: 'user-123',
+    email: 'demo@example.com',
+    tier: 'premium',           // subscription tier: 'free', 'premium', 'enterprise'
+    signUpDate: new Date('2024-01-15'),
+    isBetaTester: true,
+  };
 
   useEffect(() => {
     // Prevent multiple initialisations if the component re-renders in React strict mode.
@@ -32,39 +41,42 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
      * Custom properties allow you to target specific users or segments in CloudBees platform.
      * Set these BEFORE calling Rox.setup() so they're available for targeting rules.
      *
-     * Types:
+     * Property Types:
      * - setCustomStringProperty: For text values (userId, email, plan, etc.)
      * - setCustomNumberProperty: For numeric values (age, score, count, etc.)
      * - setCustomBooleanProperty: For true/false values (isPremium, isAdmin, etc.)
      * - setCustomDateProperty: For date/time values (registrationDate, lastLogin, etc.)
      *
-     * Use in CloudBees platform:
-     * Create targeting rules like:
+     * You can pass either:
+     * - Direct values: Rox.setCustomStringProperty("country", "USA")
+     * - Functions: Rox.setCustomStringProperty("userTier", () => user.tier)
+     *
+     * In this example, we're using a mock user object (defined above).
+     *
+     * Use in CloudBees platform to create targeting rules like:
      * - "Show feature if userTier = 'premium'"
+     * - "Show feature if accountAgeInDays > 45"
      * - "Show feature if registrationDate > '2024-01-01'"
      */
 
-    // String property example - User tier for subscription-based targeting
-    Rox.setCustomStringProperty('userTier', () => {
-      return 'premium'; // variants: 'free', 'premium', 'enterprise'
-    });
+    // String property - direct values
+    Rox.setCustomStringProperty("country", "USA")
 
-    // Number property example - User account age in days
+    // String property - User subscription tier for targeting premium features
+    Rox.setCustomStringProperty('userTier', () => user.tier);
+
+    // Number property - Calculate user account age in days
+    // Example use cases: onboarding flows, feature unlocks based on tenure
     Rox.setCustomNumberProperty('accountAgeInDays', () => {
-      return 45; // User registered 45 days ago
+      const ageInMs = Date.now() - user.signUpDate.getTime();
+      return Math.floor(ageInMs / (1000 * 60 * 60 * 24));
     });
 
-    // Boolean property example - Beta tester status
-    Rox.setCustomBooleanProperty('isBetaTester', () => {
-      return true;
-    });
+    // Boolean property - Beta tester status for early feature access
+    Rox.setCustomBooleanProperty('isBetaTester', () => user.isBetaTester);
 
-    // Date property example - User registration date
-    Rox.setCustomDateProperty('registrationDate', () => {
-      // In production, get this from user's actual registration date
-      // Example: return new Date(user.registeredAt);
-      return new Date('2024-01-15'); // User registered on Jan 15, 2024
-    });
+    // Date property - User registration date for cohort-based targeting
+    Rox.setCustomDateProperty('registrationDate', () => user.signUpDate);
 
 
     /**
