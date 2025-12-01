@@ -6,9 +6,9 @@ import Rox from "rox-browser";
 
 function App() {
 
-  const featureFlags = useFeatureFlags()
+  const flags = useFeatureFlags()
 
-  if (featureFlags.loading) {
+  if (flags.loading) {
     return (
       <div className="position-relative pb-9">
         <LoadingIndicator />
@@ -16,41 +16,24 @@ function App() {
     );
   }
 
-  // ===== DYNAMIC API EXAMPLES =====
-  // You can configure them in the CloudBees platform just like static flags
-
-  // Boolean flag using Dynamic API - Controls whether to show the dynamic message
-  // Default: false (message hidden)
-  const showDynamicMessage = Rox.dynamicApi.isEnabled('showDynamicMessage', false);
-
-  // String flag using Dynamic API - The dynamic message text to display
-  // Default: 'This is from dynamic API flags. Try changing some flag values!'
-  const dynamicMessage = Rox.dynamicApi.value('dynamicMessage', 'This is from dynamic API flags. Try changing some flag values!');
-
-  // String flag using Dynamic API - Font color for the dynamic message
-  // Default: 'Green'
-  const dynamicFontColor = Rox.dynamicApi.value('dynamicFontColor', 'Green');
-
-  // Number flag using Dynamic API - Font size in pixels for the dynamic message
-  // Default: 16
-  const dynamicFontSize = Rox.dynamicApi.getNumber('dynamicFontSize', 16);
+  // Access 'fontSize' flag using Dynamic API
+  // Note: Since fontSize is in the 'ux' namespace, we use 'ux.fontSize'
+  // Dynamic API supports all flag types:
+  // - Rox.dynamicApi.isEnabled() for boolean flags
+  // - Rox.dynamicApi.value() for string flags
+  // - Rox.dynamicApi.getNumber() for number flags
+  const fontSizeDynamic = Rox.dynamicApi.getNumber('ux.fontSize', 16);
 
   return (
     <>
       <h1>CloudBees feature management React sample application</h1>
 
       <div className="card">
-        {featureFlags.showMessage.isEnabled() && (
-          <p style={{color: featureFlags.fontColor.getValue(), fontSize: featureFlags.fontSize.getValue()}}>
-            {featureFlags.message.getValue()}
-          </p>
-        )}
-      </div>
-
-      <div className="card">
-        {showDynamicMessage && (
-          <p style={{color: dynamicFontColor, fontSize: dynamicFontSize}}>
-            {dynamicMessage}
+        {/* Using Static API for showMessage (default namespace), message (default namespace), fontColor (ux namespace) */}
+        {/* Using Dynamic API for fontSize (ux namespace) */}
+        {flags.featureFlags.showMessage.isEnabled() && (
+          <p style={{color: flags.uxFlags.fontColor.getValue(), fontSize: fontSizeDynamic}}>
+            {flags.featureFlags.message.getValue()}
           </p>
         )}
       </div>

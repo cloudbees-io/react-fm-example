@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import Rox from "rox-browser";
-import {flags} from "./flags.ts";
+import {featureFlags, uxFlags} from "./flags.ts";
 import {FeatureFlagsContext, initialFlagState} from "./index.ts";
 
 // TODO: insert your SDK key from https://cloudbees.io/ below.
-const sdkKey = '<YOUR-SDK-KEY>'
+const sdkKey = '7e1cc490-3239-4243-9610-234919b50b53'
 
 type Props = {
   children?: React.ReactNode
@@ -68,13 +68,20 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
 
 
     /**
-     * REGISTER: Register flags
+     * REGISTER: Register flags with namespaces
      *
-     * Register all pre-defined flags from flags.ts
+     * Namespaces help organize flags into logical groups.
+     * - Default namespace (''): Feature toggles and content flags
+     * - 'ux' namespace: UI/UX configuration flags
+     *
+     * When accessing namespaced flags:
+     * - Static API: Use the imported flag container (e.g., uxFlags.fontSize)
+     * - Dynamic API: Prefix with namespace (e.g., 'ux.fontSize')
      *
      * Note: Dynamic API flags do NOT need to be registered
      */
-    Rox.register('', flags)
+    Rox.register('', featureFlags)
+    Rox.register('ux', uxFlags)
 
     const initFeatureFlags = async() => {
 
@@ -150,10 +157,10 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
 
       // setTimeout(async () => {
       //   console.log('Unfreezing frozenFlag...');
-      //   flags.frozenFlag.unfreeze();
+      //   featureFlags.frozenFlag.unfreeze();
       //   console.log('Fetching latest configuration...');
       //   await Rox.fetch();
-      //   console.log('frozenFlag now has the latest value from CloudBees:', flags.frozenFlag.isEnabled());
+      //   console.log('frozenFlag now has the latest value from CloudBees:', featureFlags.frozenFlag.isEnabled());
       // }, 10000);
 
       setFlagState({...flagState, loading: false})
