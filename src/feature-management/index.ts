@@ -1,8 +1,9 @@
 import {createContext, useContext} from "react";
-import {flags, IFeatureFlagsState} from "./flags.ts";
+import {featureFlags, uxFlags, IFeatureFlagsState} from "./flags.ts";
 
 export const initialFlagState: IFeatureFlagsState = {
-  ...flags,
+  featureFlags,
+  uxFlags,
   loading: false
 }
 
