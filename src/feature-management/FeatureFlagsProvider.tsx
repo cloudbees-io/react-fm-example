@@ -17,7 +17,7 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
 
   const initialised = React.useRef(false)
 
-  // Mock user object for some custome properties example.
+  // Mock user object for some custom properties example.
   const user = {
     id: 'user-123',
     email: 'demo@example.com',
