@@ -9,7 +9,7 @@ import {Flag, RoxString, RoxNumber} from "rox-browser";
 export const featureFlags = {
   // Boolean flag - Controls whether the message is displayed
   // Default: true (message shown)
-  showMessage: new Flag(),
+  showMessage: new Flag(true),
 
   // String flag - The message text to display
   // Default: 'This is the default message; try changing some flag values!'
