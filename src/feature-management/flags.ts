@@ -1,4 +1,4 @@
-import {Flag, RoxString, RoxNumber} from "rox-browser";
+import {Flag, RoxString} from "rox-browser";
 
 /**
  * FEATURE FLAGS CONTAINER
@@ -47,11 +47,6 @@ export const uxFlags = {
   // Options: 'Red', 'Green', 'Blue', 'Black', 'Yellow'
   // Default: 'Yellow'
   fontColor: new RoxString('Yellow', ['Red', 'Green', 'Blue', 'Black', 'Yellow']),
-
-  // Number flag with options - Font size in pixels
-  // Options(variants): 12, 16, 24
-  // Default: 16
-  fontSize: new RoxNumber(16, [12, 16, 24]),
 }
 
 // Combined type for all flags

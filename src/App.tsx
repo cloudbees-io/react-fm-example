@@ -2,7 +2,6 @@ import cbLogo from './assets/CB-stacked-logo-full-color.svg'
 import './App.css'
 import {useFeatureFlags} from "./feature-management";
 import {LoadingIndicator} from "./LoadingIndicator.tsx";
-import Rox from "rox-browser";
 
 function App() {
 
@@ -16,23 +15,14 @@ function App() {
     );
   }
 
-  // Access 'fontSize' flag using Dynamic API
-  // Note: Since fontSize is in the 'ux' namespace, we use 'ux.fontSize'
-  // Dynamic API supports all flag types:
-  // - Rox.dynamicApi.isEnabled() for boolean flags
-  // - Rox.dynamicApi.value() for string flags
-  // - Rox.dynamicApi.getNumber() for number flags
-  const fontSizeDynamic = Rox.dynamicApi.getNumber('ux.fontSize', 16);
-
   return (
     <>
       <h1>CloudBees feature management React sample application</h1>
 
       <div className="card">
         {/* Using Static API for showMessage (default namespace), message (default namespace), fontColor (ux namespace) */}
-        {/* Using Dynamic API for fontSize (ux namespace) */}
         {flags.featureFlags.showMessage.isEnabled() && (
-          <p style={{color: flags.uxFlags.fontColor.getValue(), fontSize: fontSizeDynamic}}>
+          <p style={{color: flags.uxFlags.fontColor.getValue(), fontSize: 16}}>
             {flags.featureFlags.message.getValue()}
           </p>
         )}
