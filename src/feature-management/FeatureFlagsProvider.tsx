@@ -154,27 +154,6 @@ export const FeatureFlagsProvider = ({children} : Props): React.ReactNode => {
         }
       })
 
-      /**
-       * FLAG FREEZE - Demonstration
-       *
-       * Uncomment the code below to see freeze/unfreeze in action:
-       * After 10 seconds, it will unfreeze the flag and fetch new values.
-       *
-       * To test:
-       * 1. Change frozenFlag value in CloudBees platform
-       * 2. Notice it doesn't update (it's frozen)
-       * 3. Uncomment code below and reload page
-       * 4. After 10 seconds, the flag will unfreeze and fetch latest value
-       */
-
-      // setTimeout(async () => {
-      //   console.log('Unfreezing frozenFlag...');
-      //   featureFlags.frozenFlag.unfreeze();
-      //   console.log('Fetching latest configuration...');
-      //   await Rox.fetch();
-      //   console.log('frozenFlag now has the latest value from CloudBees:', featureFlags.frozenFlag.isEnabled());
-      // }, 10000);
-
       setFlagState({...flagState, loading: false})
     }
 
