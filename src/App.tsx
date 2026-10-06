@@ -29,13 +29,6 @@ function App() {
       <h1>CloudBees feature management React sample application</h1>
 
       <div className="card">
-        {/* Using Static API for showMessage (default namespace), message (default namespace), fontColor (ux namespace) */}
-        {/* Using Dynamic API for fontSize (ux namespace) */}
-        {flags.featureFlags.showMessage.isEnabled() && (
-          <p style={{color: flags.uxFlags.fontColor.getValue(), fontSize: fontSizeDynamic}}>
-            {flags.featureFlags.message.getValue()}
-          </p>
-        )}
       </div>
 
       <div className="card">
